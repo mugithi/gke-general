@@ -64,7 +64,7 @@ export GOOGLE_PROJECT=${PROVISIONER_PROJECT}
 
 ```
 export TF_VAR_org_id=
-export TF_VAR_project=
+export TF_VAR_project_name=
 export TF_VAR_region=us-west1
 export TF_VAR_billing_account=
 ```
