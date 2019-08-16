@@ -8,7 +8,7 @@ gcloud projects list
 
 ## set the variables
 ```
-export PROVISIONER_VAR_org_id=
+export PROVISIONER_VAR_org_id=gcloud organizations list --format="value(name)"
 export PROVISIONER_PROJECT=
 export PROVISIONER_VAR_billing_account=
 export PROVISIONER_ADMIN=${USER}-provisioner-admin
