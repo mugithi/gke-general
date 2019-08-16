@@ -8,9 +8,11 @@ gcloud projects list
 
 ## set the variables
 ```
-export PROVISIONER_VAR_org_id=gcloud organizations list --format="value(name)"
-export PROVISIONER_PROJECT=
-export PROVISIONER_VAR_billing_account=
+export TF_VAR_org_id=
+export TF_VAR_project=
+
+export TF_region=us-west1
+export PROVISIONER_PROJECT=${TF_VAR_project}
 export PROVISIONER_ADMIN=${USER}-provisioner-admin
 export PROVISIONER_CREDS=~/.config/gcloud/${USER}-provisioner-admin.json
 ```
@@ -83,14 +85,14 @@ provider "google" {
  region = "${var.region}"
 }
 
-resource "random_id" "id" {
- byte_length = 4
- prefix      = "${var.project_name}-"
-}
+#resource "random_id" "id" {
+# byte_length = 4
+# prefix      = "${var.project_name}-"
+#}
 
 resource "google_project" "project" {
  name            = "${var.project_name}"
- project_id      = "${random_id.id.hex}"
+ project_id      = "${var.project_name}"
  billing_account = "${var.billing_account}"
  org_id          = "${var.org_id}"
 }
@@ -98,14 +100,14 @@ resource "google_project" "project" {
 resource "google_project_services" "project" {
  project = "${google_project.project.project_id}"
  services = [
-   "compute.googleapis.com"
+   "compute.googleapis.com",
+   "container.googleapis.com"
  ]
 }
 
 output "project_id" {
  value = "${google_project.project.project_id}"
 }
-EOF 
 ```
 
 
