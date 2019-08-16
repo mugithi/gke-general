@@ -64,14 +64,16 @@ export GOOGLE_PROJECT=${PROVISIONER_PROJECT}
 
 ```
 export TF_VAR_org_id=
-export TF_VAR_project_name=
+export TF_VAR_service_project_name=
+export TF_VAR_host_project_name=${PROVISIONER_PROJECT}
 export TF_VAR_region=us-west1
 export TF_VAR_billing_account=
+export TF_VAR
 ```
 
 ## Terraform Project
 ```
-variable "project_name" {}
+variable "service_project_name" {}
 variable "billing_account" {}
 variable "org_id" {}
 variable "region" {}
@@ -82,12 +84,12 @@ provider "google" {
 
 #resource "random_id" "id" {
 # byte_length = 4
-# prefix      = "${var.project_name}-"
+# prefix      = "${var.service_project_name}-"
 #}
 
 resource "google_project" "project" {
- name            = "${var.project_name}"
- project_id      = "${var.project_name}"
+ name            = "${var.service_project_name}"
+ project_id      = "${var.service_project_name}"
  billing_account = "${var.billing_account}"
  org_id          = "${var.org_id}"
 }
@@ -99,6 +101,19 @@ resource "google_project_services" "project" {
    "container.googleapis.com"
  ]
 }
+
+# A host project provides network resources to associated service projects.
+resource "google_compute_shared_vpc_host_project" "host" {
+  project = "var.host_project_name"
+}
+
+# A service project gains access to network resources provided by its
+# associated host project.
+resource "google_compute_shared_vpc_service_project" "service1" {
+  host_project    = "${google_compute_shared_vpc_host_project.host.project}"
+  service_project = "var.service_project_name"
+}
+
 
 output "project_id" {
  value = "${google_project.project.project_id}"
