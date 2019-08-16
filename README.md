@@ -27,12 +27,11 @@ gcloud services enable serviceusage.googleapis.com
 ## create the provisioner service account and download keys
 ```
 gcloud iam service-accounts create provisioner --display-name "provisioner admin account"
-gcloud iam service-accounts keys create ${PROVISIONER_CREDS} --iam-account 
+gcloud iam service-accounts keys create ${PROVISIONER_CREDS} --iam-account provisioner@${PROVISIONER_PROJECT}.iam.gserviceaccount.com
 ```
 
 ## grant permissions to the service accounts at the account level
 ```
-provisioner@${PROVISIONER_PROJECT}.iam.gserviceaccount.com
 gcloud projects add-iam-policy-binding ${PROVISIONER_PROJECT} --member serviceAccount:provisioner@${PROVISIONER_PROJECT}.iam.gserviceaccount.com --role roles/viewer
 gcloud projects add-iam-policy-binding ${PROVISIONER_PROJECT} --member serviceAccount:provisioner@${PROVISIONER_PROJECT}.iam.gserviceaccount.com --role roles/storage.admin
 ```
