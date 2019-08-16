@@ -67,6 +67,7 @@ group_role = "roles/owner"
 credentials_path = "/home//.config/gcloud/-provisioner-admin.json"
 shared_vpc_subnets = ["projects/host-networking-project-01/regions/us-west2/subnetworks/us-west-prd-datacenter-network","projects/host-networking-project-01/regions/us-east1/subnetworks/us-west-prd-datacenter-network"]
 EOF
+```
 
 
 
