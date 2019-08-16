@@ -13,8 +13,6 @@ export PROVISIONER_ADMIN=${USER}-provisioner-admin
 export PROVISIONER_CREDS=~/.config/gcloud/${USER}-provisioner-admin.json
 ```
 
-
-
 ##  enable the apis
 ```
 gcloud services enable cloudresourcemanager.googleapis.com
@@ -66,66 +64,36 @@ export GOOGLE_APPLICATION_CREDENTIALS=${PROVISIONER_CREDS}
 export GOOGLE_PROJECT=${PROVISIONER_PROJECT}
 ```
 
-## Export Terraform Variables
+## List the project variables
 
 ```
-
-export TF_VAR_service_project_name=
-export TF_VAR_host_project_name=${PROVISIONER_PROJECT}
-export TF_VAR_region=us-west1
-export TF_VAR_org_id=$(gcloud organizations list | awk '!/^DISPLAY_NAME/ { print $2 }')
-export TF_VAR_billing_account=$(gcloud beta billing accounts list | grep -i true | awk '{ print $1 }')
+gcloud organizations list 
+gcloud beta billing accounts list 
 ```
 
-## Terraform Project
+## Clone the Project Factory Repository
+
 ```
-variable "service_project_name" {}
-variable "host_project_name" {}
-variable "billing_account" {}
-variable "org_id" {}
-variable "region" {}
-
-provider "google" {
- region = "${var.region}"
-}
-
-#resource "random_id" "id" {
-# byte_length = 4
-# prefix      = "${var.service_project_name}-"
-#}
-
-resource "google_project" "project" {
- name            = "${var.service_project_name}"
- project_id      = "${var.service_project_name}"
- billing_account = "${var.billing_account}"
- org_id          = "${var.org_id}"
-}
-
-resource "google_project_services" "project" {
- project = "${google_project.project.project_id}"
- services = [
-   "compute.googleapis.com",
-   "container.googleapis.com"
- ]
-}
-
-# A host project provides network resources to associated service projects.
-resource "google_compute_shared_vpc_host_project" "host" {
-  project = "${var.host_project_name}"
-}
-
-# A service project gains access to network resources provided by its
-# associated host project.
-resource "google_compute_shared_vpc_service_project" "service1" {
-  host_project    = "${google_compute_shared_vpc_host_project.host.project}"
-  service_project = "${var.service_project_name}"
-}
-
-
-output "project_id" {
- value = "${google_project.project.project_id}"
-}
+git clone https://github.com/terraform-google-modules/terraform-google-project-factory.git .
 ```
+
+## Create a variables file 
+
+```
+cat <<EOF >> terraforms.tfvars
+org_id = ""
+domain = "example.com"
+name = "service-project-001"
+project_id = "service-project-001"
+shared_vpc = "host-networking-project-01"
+billing_account = ""
+folder_id = "123156740"
+group_name = "gcp-users"
+group_role = "roles/owner"
+credentials_path = "/home//.config/gcloud/-provisioner-admin.json"
+shared_vpc_subnets = ["projects/host-networking-project-01/regions/us-west2/subnetworks/us-west-prd-datacenter-network","projects/host-networking-project-01/regions/us-east1/subnetworks/us-west-prd-datacenter-network"]
+EOF
+
 
 
 
