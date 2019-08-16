@@ -42,43 +42,18 @@ gcloud organizations add-iam-policy-binding ${PROVISIONER_VAR_org_id} --member s
 
 ```
 
-## Create terraform storage bucket
-```
-gsutil mb -p ${PROVISIONER_PROJECT} gs://${PROVISIONER_PROJECT}
-
-cat > backend.tf << EOF
-terraform {
- backend "gcs" {
-   bucket  = "${PROVISIONER_PROJECT}"
-   prefix  = "terraform/state"
- }
-}
-EOF
-
-gsutil versioning set on gs://${PROVISIONER_PROJECT}
-```
-
 ## Export credentials
 ```
 export GOOGLE_APPLICATION_CREDENTIALS=${PROVISIONER_CREDS}
 export GOOGLE_PROJECT=${PROVISIONER_PROJECT}
 ```
 
-## List the project variables
-
-```
-gcloud organizations list 
-gcloud beta billing accounts list 
-```
-
 ## Clone the Project Factory Repository
-
 ```
 git clone https://github.com/terraform-google-modules/terraform-google-project-factory.git .
 ```
 
 ## Create a variables file 
-
 ```
 cat <<EOF >> terraforms.tfvars
 org_id = ""
@@ -93,6 +68,8 @@ group_role = "roles/owner"
 credentials_path = "/home//.config/gcloud/-provisioner-admin.json"
 shared_vpc_subnets = ["projects/host-networking-project-01/regions/us-west2/subnetworks/us-west-prd-datacenter-network","projects/host-networking-project-01/regions/us-east1/subnetworks/us-west-prd-datacenter-network"]
 EOF
+
+
 
 
 
