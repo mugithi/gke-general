@@ -74,6 +74,7 @@ export TF_VAR
 ## Terraform Project
 ```
 variable "service_project_name" {}
+variable "host_project_name" {}
 variable "billing_account" {}
 variable "org_id" {}
 variable "region" {}
