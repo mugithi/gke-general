@@ -71,6 +71,61 @@ EOF
 
 
 
+```
+diff -r terraform-google-kubernetes-engine/cluster_regional.tf terraform-google-kubernetes-engine.2/cluster_regional.tf
+147a148,149
+>   max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", 110)
+> 
+diff -r terraform-google-kubernetes-engine/examples/shared_vpc_private/main.tf terraform-google-kubernetes-engine.2/examples/shared_vpc_private/main.tf
+60a61
+>   max_pods_per_node       = 16
+diff -r terraform-google-kubernetes-engine/modules/beta-private-cluster/cluster_regional.tf terraform-google-kubernetes-engine.2/modules/beta-private-cluster/cluster_regional.tf
+191a192,193
+>   max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", 110)
+> 
+diff -r terraform-google-kubernetes-engine/modules/beta-private-cluster/cluster_zonal.tf terraform-google-kubernetes-engine.2/modules/beta-private-cluster/cluster_zonal.tf
+188c188
+<   max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", 250)
+---
+>   max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", 110)
+diff -r terraform-google-kubernetes-engine/modules/beta-private-cluster/main.tf terraform-google-kubernetes-engine.2/modules/beta-private-cluster/main.tf
+227,238d226
+<   # BETA features
+<   cluster_type_output_istio_enabled = {
+<     regional = element(concat(google_container_cluster.primary.*.addons_config.0.istio_config.0.disabled, [""]), 0)
+<     zonal    = element(concat(google_container_cluster.zonal_primary.*.addons_config.0.istio_config.0.disabled, [""]), 0)
+<   }
+< 
+<   cluster_type_output_pod_security_policy_enabled = {
+<     regional = element(concat(google_container_cluster.primary.*.pod_security_policy_config.0.enabled, [""]), 0)
+<     zonal    = element(concat(google_container_cluster.zonal_primary.*.pod_security_policy_config.0.enabled, [""]), 0)
+<   }
+<   # /BETA features
+< 
+269,273d256
+<   # BETA features
+<   cluster_istio_enabled               = ! local.cluster_type_output_istio_enabled[local.cluster_type]
+<   cluster_cloudrun_enabled            = var.cloudrun
+<   cluster_pod_security_policy_enabled = local.cluster_type_output_pod_security_policy_enabled[local.cluster_type]
+<   # /BETA features
+diff -r terraform-google-kubernetes-engine/modules/beta-private-cluster/outputs.tf terraform-google-kubernetes-engine.2/modules/beta-private-cluster/outputs.tf
+116,129d115
+< output "istio_enabled" {
+<   description = "Whether Istio is enabled"
+<   value       = local.cluster_istio_enabled
+< }
+< 
+< output "cloudrun_enabled" {
+<   description = "Whether CloudRun enabled"
+<   value       = local.cluster_cloudrun_enabled
+< }
+< 
+< output "pod_security_policy_enabled" {
+<   description = "Whether pod security policy is enabled"
+<   value       = local.cluster_pod_security_policy_enabled
+< }
+```
+
 
 
 
