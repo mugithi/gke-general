@@ -35,16 +35,6 @@ gcloud projects add-iam-policy-binding ${PROVISIONER_PROJECT} --member serviceAc
 gcloud projects add-iam-policy-binding ${PROVISIONER_PROJECT} --member serviceAccount:provisioner@${PROVISIONER_PROJECT}.iam.gserviceaccount.com --role roles/storage.admin
 ```
 
-## enable apis
-```
-gcloud services enable cloudresourcemanager.googleapis.com
-gcloud services enable cloudbilling.googleapis.com
-gcloud services enable iam.googleapis.com
-gcloud services enable compute.googleapis.com
-gcloud services enable serviceusage.googleapis.com
-```
-
-
 ## map the iam policy 
 ```
 gcloud organizations add-iam-policy-binding ${PROVISIONER_VAR_org_id} --member serviceAccount:provisioner@${PROVISIONER_PROJECT}.iam.gserviceaccount.com --role roles/resourcemanager.projectCreator
