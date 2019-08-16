@@ -1,5 +1,4 @@
-Grab the variables
-
+## Grab the variables
 ```
 gcloud organizations list
 gcloud beta billing accounts list
