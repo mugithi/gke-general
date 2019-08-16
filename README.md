@@ -69,12 +69,12 @@ export GOOGLE_PROJECT=${PROVISIONER_PROJECT}
 ## Export Terraform Variables
 
 ```
-export TF_VAR_org_id=
+
 export TF_VAR_service_project_name=
 export TF_VAR_host_project_name=${PROVISIONER_PROJECT}
 export TF_VAR_region=us-west1
-export TF_VAR_billing_account=
-export TF_VAR
+export TF_VAR_org_id=$(gcloud organizations list | awk '!/^DISPLAY_NAME/ { print $2 }')
+export TF_VAR_billing_account=$(gcloud beta billing accounts list | grep -i true | awk '{ print $1 }')
 ```
 
 ## Terraform Project
