@@ -10,7 +10,6 @@ gcloud projects list
 ```
 export TF_VAR_org_id=
 export TF_VAR_project=
-
 export TF_region=us-west1
 export PROVISIONER_PROJECT=${TF_VAR_project}
 export PROVISIONER_ADMIN=${USER}-provisioner-admin
