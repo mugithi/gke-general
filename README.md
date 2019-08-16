@@ -8,10 +8,7 @@ gcloud projects list
 
 ## set the variables
 ```
-export TF_VAR_org_id=
-export TF_VAR_project=
-export TF_region=us-west1
-export PROVISIONER_PROJECT=${TF_VAR_project}
+export PROVISIONER_PROJECT=
 export PROVISIONER_ADMIN=${USER}-provisioner-admin
 export PROVISIONER_CREDS=~/.config/gcloud/${USER}-provisioner-admin.json
 ```
@@ -61,6 +58,15 @@ gsutil versioning set on gs://${PROVISIONER_PROJECT}
 ```
 export GOOGLE_APPLICATION_CREDENTIALS=${PROVISIONER_CREDS}
 export GOOGLE_PROJECT=${PROVISIONER_PROJECT}
+```
+
+## Export Terraform Variables
+
+```
+export TF_VAR_org_id=
+export TF_VAR_project=
+export TF_VAR_region=us-west1
+export TF_VAR_billing_account=
 ```
 
 ## Terraform Project
