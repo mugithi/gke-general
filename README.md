@@ -69,3 +69,22 @@ credentials_path = "/home//.config/gcloud/-provisioner-admin.json"
 shared_vpc_subnets = ["projects/host-networking-project-01/regions/us-west2/subnetworks/us-west-prd-datacenter-network","projects/host-networking-project-01/regions/us-east1/subnetworks/us-west-prd-datacenter-network"]
 EOF
 ```
+
+
+```
++  node_pools = [
++    {
++      name               = "default-node-pool"
++      machine_type       = "n1-standard-2"
++      min_count          = 1
++      max_count          = 20
++      disk_size_gb       = 100
++      disk_type          = "pd-standard"
++      image_type         = "COS"
++      auto_repair        = true
++      auto_upgrade       = true
++      preemptible        = false
++      max_pods_per_node  = 16
++    },
++  ]
+```
