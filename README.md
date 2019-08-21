@@ -88,3 +88,7 @@ EOF
 +    },
 +  ]
 ```
+
+```
+max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", 110)
+```
