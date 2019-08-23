@@ -92,3 +92,34 @@ EOF
 ```
 max_pods_per_node = lookup(var.node_pools[count.index], "max_pods_per_node", 110)
 ```
+
+
+## Pubsub - subscribing to Pubsub topics for a specific project
+```
+import json
+import time
+
+from google.cloud import pubsub_v1
+
+project_id = "network-host-project-243718"
+subscription_name = "newtopic"
+
+subscriber = pubsub_v1.SubscriberClient()
+# The `subscription_path` method creates a fully qualified identifier
+# in the form `projects/{project_id}/subscriptions/{subscription_name}`
+subscription_path = subscriber.subscription_path(
+    project_id, subscription_name)
+
+def callback(message):
+    print json.loads(message.data)["resource"]["labels"]["project_id"]
+    #print json.loads(message.data)
+    message.ack()
+
+subscriber.subscribe(subscription_path, callback=callback)
+
+# The subscriber is non-blocking. We must keep the main thread from
+# exiting to allow it to process messages asynchronously in the background.
+print('Listening for messages on {}'.format(subscription_path))
+while True:
+    time.sleep(60)
+```
